@@ -1,0 +1,17 @@
+WedHQ V42 FINAL GITHUB RELEASE AUDIT
+
+PASS — Scenario form Netlify markup
+PASS — Event form Netlify markup
+PASS — Spotify EP01 embed
+PASS — Spotify EP01 link
+PASS — Apple EP01 link
+PASS — Spotify show link
+PASS — Apple show link
+PASS — Old event redirect absent
+PASS — No local preview files
+
+Overall: PASS
+No static issues found.
+
+
+Note: real Netlify email delivery can only be verified after production deployment and notification configuration.

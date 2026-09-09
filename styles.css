@@ -258,3 +258,34 @@ section{padding:78px 5vw}
 .share-wa:hover{transform:translateY(-1px);background:var(--ink);color:#fff}
 .share-after-rsvp{margin:46px 0 34px;padding:30px}
 @media(max-width:640px){.share-wailou{padding:28px 20px}.share-wailou-buttons{display:grid}.share-wa{justify-content:flex-start;width:100%;box-sizing:border-box}}
+
+
+/* V39: Netlify form responses */
+.form-response{
+  margin-top:18px;
+  padding:22px 24px;
+  border:1px solid var(--line);
+  background:#fff;
+  line-height:1.75;
+}
+.form-response strong{
+  display:block;
+  margin-bottom:6px;
+  font-size:18px;
+  color:var(--ink);
+}
+.form-response p{
+  margin:0;
+}
+.form-success{
+  border-left:4px solid var(--ink);
+}
+.form-error{
+  border-left:4px solid #9a4a4a;
+}
+button[disabled]{
+  opacity:.65;
+  cursor:wait;
+}
+
+.podcast-follow-links{display:flex;gap:.55rem;align-items:center;flex-wrap:wrap;margin-top:12px}

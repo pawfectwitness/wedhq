@@ -122,8 +122,10 @@
 <h2>有件事你唔知<br/>應該點處理？</h2>
 <p>可以匿名。可以係新人、婚禮人、家人，甚至係一件你到而家都仲諗唔明嘅婚禮小事。</p>
 </div>
-<form class="scenario-form" data-netlify="true" id="scenario-form" method="POST" name="scenario-submission">
+<form class="scenario-form" data-netlify="true" data-netlify-honeypot="bot-field" id="scenario-form" method="POST" name="scenario-submission">
 <input name="form-name" type="hidden" value="scenario-submission"/>
+<input name="subject" type="hidden" value="WedHQ — New Scenario Submission"/>
+<p class="netlify-honeypot" hidden><label>Don’t fill this out: <input name="bot-field"/></label></p>
 <div class="form-note">
     所有投稿均以匿名方式處理，你唔需要提供真名。
   </div>
@@ -140,15 +142,15 @@
 </label>
 <label>
 <span>有咩婚禮情境，你想我哋拎出嚟傾？ <strong>*</strong></span>
-<textarea name="scenario" required="" rows="5"></textarea>
+<textarea name="scenario" required="" rows="5" maxlength="10000"></textarea>
 </label>
 <label>
 <span>關於呢個情境，你最想聽我哋討論啲咩？ <strong>*</strong></span>
-<textarea name="discussion" required="" rows="5"></textarea>
+<textarea name="discussion" required="" rows="5" maxlength="5000"></textarea>
 </label>
 <label>
 <span>想我哋點稱呼你？ <small>（optional）</small></span>
-<input name="alias" placeholder="暱稱 / Alias" type="text"/>
+<input name="alias" placeholder="暱稱 / Alias" type="text" maxlength="100" autocomplete="nickname"/>
 </label>
 <fieldset class="participation">
 <legend>如果我哋揀中呢個情境，你想點參與？ <strong>*</strong></legend>
@@ -168,12 +170,21 @@
 <div class="contact-field" hidden="" id="contact-field">
 <label>
 <span>聯絡方式 <strong>*</strong></span>
-<input id="contact" name="contact" placeholder="Instagram handle 或 Email" type="text"/>
+<input id="contact" name="contact" placeholder="Instagram handle 或 Email" type="text" maxlength="200" autocomplete="email"/>
 </label>
 <p>聯絡資料只會用於跟進今次投稿，不會公開。</p>
 </div>
 <button type="submit">提交情境</button>
 </form>
+
+<div class="form-response form-success" id="scenario-success" role="status" aria-live="polite" hidden>
+  <strong>收到，多謝你嘅投稿。</strong>
+  <p>我哋已經收到你分享嘅婚禮情景。如果你有留低聯絡方法，而我哋之後想進一步了解內容、邀請你參與，或者需要跟進，我哋會再聯絡你。</p>
+</div>
+<div class="form-response form-error" id="scenario-error" role="alert" hidden>
+  <strong>暫時未能提交。</strong>
+  <p>請稍後再試一次。</p>
+</div>
 </section>
 <section class="about" id="about">
 <div class="about-copy about-intro">
@@ -208,9 +219,13 @@
 document.addEventListener('DOMContentLoaded', function () {
   const form = document.getElementById('scenario-form');
   if (!form) return;
+
   const contactWrap = document.getElementById('contact-field');
   const contact = document.getElementById('contact');
   const radios = form.querySelectorAll('input[name="participation"]');
+  const success = document.getElementById('scenario-success');
+  const error = document.getElementById('scenario-error');
+  const submitButton = form.querySelector('button[type="submit"]');
 
   function updateContact() {
     const selected = form.querySelector('input[name="participation"]:checked');
@@ -220,8 +235,41 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!needsContact) contact.value = '';
   }
 
+  function encode(data) {
+    return new URLSearchParams(data).toString();
+  }
+
   radios.forEach(radio => radio.addEventListener('change', updateContact));
   updateContact();
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    success.hidden = true;
+    error.hidden = true;
+    submitButton.disabled = true;
+    submitButton.textContent = '提交中…';
+
+    try {
+      const formData = new FormData(form);
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: encode(formData)
+      });
+
+      if (!response.ok) throw new Error('Submission failed');
+
+      form.reset();
+      updateContact();
+      form.hidden = true;
+      success.hidden = false;
+      success.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    } catch (err) {
+      error.hidden = false;
+      submitButton.disabled = false;
+      submitButton.textContent = '提交情境';
+    }
+  });
 });
 </script>
 </body>
