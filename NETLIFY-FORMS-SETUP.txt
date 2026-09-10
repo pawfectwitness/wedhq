@@ -1,28 +1,7 @@
-WedHQ V42 — FINAL GITHUB RELEASE
-
-FORMS
-1) scenario-submission
-2) event-notification
-
-PRODUCTION FORM FLOW
-Website form -> Netlify Forms -> Netlify dashboard submission record -> Netlify email notification
-
-REQUIRED NETLIFY SETUP
-1. Form Detection must be enabled BEFORE this deployment.
-2. Deploy this V42 release.
-3. Confirm Netlify detects BOTH forms:
-   - scenario-submission
-   - event-notification
-4. Configure:
-   Project configuration -> Notifications -> Emails and webhooks
-   -> Form submission notifications -> Add notification
-5. Use All forms if both should notify the same inbox.
-
-FINAL ACCEPTANCE TEST
-A. Submit one realistic Scenario form on the live site.
-B. Confirm the website shows the inline success message.
-C. Confirm the exact submission appears in Netlify > Forms.
-D. Confirm the notification email arrives in the chosen inbox.
-E. Repeat A–D for Event notification.
-
-Do not consider the production form chain fully verified until all of the above pass.
+WedHQ V43
+Both forms retain data-netlify=true and hidden form-name fields.
+V43 removes the optional honeypot and uses explicit URLSearchParams construction for broader mobile Safari compatibility.
+After deploy, test BOTH forms on iPhone/mobile and desktop. A successful production test requires:
+1) inline success,
+2) submission visible in Netlify Forms,
+3) notification email received.

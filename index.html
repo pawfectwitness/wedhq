@@ -43,7 +43,10 @@
     ]
   }
   </script>
-</link></head>
+</link><link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+</head>
 <body>
 <header class="site-header">
 <a aria-label="WedHQ home" class="brand" href="#top"><span class="wed">WED</span><span class="hq">HQ</span></a>
@@ -122,10 +125,10 @@
 <h2>有件事你唔知<br/>應該點處理？</h2>
 <p>可以匿名。可以係新人、婚禮人、家人，甚至係一件你到而家都仲諗唔明嘅婚禮小事。</p>
 </div>
-<form class="scenario-form" data-netlify="true" data-netlify-honeypot="bot-field" id="scenario-form" method="POST" name="scenario-submission">
+<form class="scenario-form" data-netlify="true" id="scenario-form" method="POST" name="scenario-submission">
 <input name="form-name" type="hidden" value="scenario-submission"/>
 <input name="subject" type="hidden" value="WedHQ — New Scenario Submission"/>
-<p class="netlify-honeypot" hidden><label>Don’t fill this out: <input name="bot-field"/></label></p>
+
 <div class="form-note">
     所有投稿均以匿名方式處理，你唔需要提供真名。
   </div>
@@ -236,7 +239,9 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function encode(data) {
-    return new URLSearchParams(data).toString();
+    const params = new URLSearchParams();
+    for (const [key, value] of data.entries()) params.append(key, value);
+    return params.toString();
   }
 
   radios.forEach(radio => radio.addEventListener('change', updateContact));
@@ -253,7 +258,8 @@ document.addEventListener('DOMContentLoaded', function () {
       const formData = new FormData(form);
       const response = await fetch('/', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'text/html' },
+        cache: 'no-store',
         body: encode(formData)
       });
 
