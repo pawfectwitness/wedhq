@@ -1,33 +1,41 @@
-# EP02 launch preview
+# EP02 launch QA
 
-Source: approved V37 layout, compared with the current main branch a4a410b (later EP01/platform/SEO/favicon improvements retained).
+Updated 18 November 2026. This replaces the earlier signed-out verification blocker.
 
-## Routes
+## Scope and routes
 
-- `/`: newest episode feature now EP02.
-- `/episodes`: the existing Podcast page and episodes listing are the **same route**. Original introduction, platform follow links, search and series filters retained; EP02 latest feature and archive card added before EP01. No separate `/podcast` route exists (404 on current production).
-- `/episode-002`: uses EP01's header, typography, spacing, player and platform controls; supplied EP02 artwork used unchanged. Apple Podcasts is a real disabled button without any URL.
-- `/episode-001`: original content, Spotify, YouTube, Apple URLs unchanged. Added the missing existing mobile-menu script.
+The approved V37 design and subsequent existing site improvements are retained. Shared EP02 data renders the homepage, the combined Podcast/episodes route `/episodes`, and `/episode-002`. EP01 now uses the supplied original thumbnail on its archive card and landing page, with matching share metadata. Existing EP01 listening links are unchanged.
 
-Episode content is defined in `data/episodes.json` and rendered into static HTML by `tools/build-episodes.py`. Metadata remains indexable without client-side JavaScript.
+## Completed verification
 
-## Verified
+- EP02 title, host Q蚊, Cantonese, duration 27:26 and supplied summary verified.
+- Both supplied artwork files preserved byte-for-byte; both thumbnails loaded successfully on the hosted preview.
+- EP02 YouTube and Spotify links, disabled Apple button without URL, canonical/OG metadata and PodcastEpisode data checked.
+- EP01 remains accessible with its existing listening links.
+- Favicons and permanent anonymous-submission disclaimer retained.
+- Desktop layout, 390px mobile layout, mobile menu, episode search and series filters checked in Chromium.
+- Local build succeeds. Source and published form definitions match, including POST, data-netlify and hidden form-name fields. Existing route files remain present.
 
-- Exact EP02 title, Q蚊, Cantonese, 27:26, both summary paragraphs.
-- Source artwork matches the supplied PNG byte-for-byte.
-- EP02 YouTube and Spotify hrefs, disabled Apple markup, canonical, OG and PodcastEpisode JSON-LD.
-- EP01 content unchanged except the shared menu script.
-- Favicons were already present and retained.
-- Permanent anonymous-submission disclaimer added beside the submission form.
-- Desktop EP02 visual inspection; 390px mobile iframe layout and mobile navigation tested in the managed browser (Chromium; not a physical iPhone/Safari test).
-- Search EP02 hides EP01; series filter interactions checked.
-- Actual local form POST receives HTTP 501 because this preview intentionally has no Netlify backend: UI correctly shows error, keeps the form and does not show success.
-- JavaScript syntax checks and static content/schema assertions passed.
+## Authenticated Netlify Forms verification
 
-## Form limitation / release blocker
+Real submissions were made through authenticated Deploy Preview #2 on 18 November 2026; this was not a simulation or a success-message-only test.
 
-The old handler treated **any HTTP 2xx** as success, even a fallback homepage. Both forms now share a conservative handler that requires the Netlify receipt text and rejects returned form/homepage HTML. This guards false positives, but is **not proof of a stored submission or email delivery**.
+| Form and flow | Front-end receipt | Netlify backend | Notification delivery |
+| --- | --- | --- | --- |
+| scenario-submission: desktop, submission-only | Passed | Correct Verified record with complete fields | Actual notification received in configured inbox |
+| event-notification: 390px viewport | Passed | Correct Verified record with email and role | Actual notification received in configured inbox |
+| scenario-submission: 390px viewport, follow-up contact | Passed | Correct Verified record including contact field | Actual notification received in configured inbox |
 
-Netlify Deploy Preview #2 built successfully, but its existing Team Protection requires a signed-in invited Netlify account. The connected browser was signed out. Consequently a real hosted submission, Verified/Spam list entry, and notification email have NOT been verified. Do not claim the mobile delivery issue resolved, and do not approve production until those checks pass. Check both form names (`scenario-submission`, `event-notification`), form detection, verified/spam queues and email notifications with an authenticated account.
+Both forms' Verified and Spam queues were inspected. Test records were in Verified, not Spam. Form detection is enabled. Both existing notification rules were inspected and left unchanged; delivery was verified independently in the recipient inbox. Test content was clearly identified as QA. Existing records were not changed or deleted. Private recipient details and submission contents are intentionally excluded from this public report.
 
-Do not merge PR #2 or deploy production until Kit explicitly approves the preview. No production source branch or deployment changed.
+## Receipt validation review
+
+Both handlers await the shared forms.js transport before showing success. It requires an OK response with the current default Netlify receipt phrase and rejects generic homepage/form/login HTML. All three legitimate hosted submissions passed; backend records and actual delivered notifications corroborated those results. A local POST without a Netlify backend correctly produced an error rather than false success.
+
+The validator intentionally supports the current default English Netlify receipt. A future custom, localized or empty success response requires updating validation to avoid false rejection. A receipt alone does not guarantee future storage or email delivery.
+
+## Coverage limits and release approval
+
+Physical iPhone/Safari, interrupted/offline submission, every possible spam-filter outcome and future custom receipt formats were not tested. Production form submissions have not been exercised; authenticated hosted-preview submissions have.
+
+The owner explicitly approved production publication conditional on final QA passing on 18 November 2026. Final deployment status and live-route checks will be reported after the production deployment. No unrelated changes are in scope.
