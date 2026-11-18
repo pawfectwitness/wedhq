@@ -289,3 +289,15 @@ button[disabled]{
 }
 
 .podcast-follow-links{display:flex;gap:.55rem;align-items:center;flex-wrap:wrap;margin-top:12px}
+
+/* EP02: reuse the established cards, typography and platform controls. */
+.episode-artwork{display:flex;align-items:center;min-width:0;align-self:center}
+.episode-artwork img,.episode-cover,.episode-card-image img{display:block;width:100%;height:auto}
+.episode-card-image{margin:-24px -24px 22px!important}
+.episode-cover{margin-top:28px;border-radius:12px}
+.platforms button{border:1px solid var(--line);padding:10px 14px;border-radius:999px;font:700 13px "Noto Sans TC",system-ui,sans-serif;background:transparent;color:var(--ink)}
+.platforms button:disabled{opacity:.55;cursor:not-allowed}
+.platform-note{font-size:13px;color:var(--muted)}
+.submission-disclaimer{font-size:13px;line-height:1.8;color:var(--muted);margin-top:24px}
+[hidden]{display:none!important}
+@media(max-width:860px){.hero-grid{grid-template-columns:minmax(0,1fr)}.featured-card{grid-template-columns:minmax(0,1fr)}.listen-row{flex-wrap:wrap}.episode-artwork{max-width:100%}}
