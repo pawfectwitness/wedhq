@@ -1,0 +1,17 @@
+[build]
+  command = "python3 tools/build.py"
+  publish = "dist"
+
+[build.processing]
+  skip_processing = false
+
+[build.processing.html]
+  pretty_urls = true
+
+[context.deploy-preview]
+  command = "python3 tools/build.py"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"

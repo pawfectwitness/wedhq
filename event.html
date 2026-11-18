@@ -66,7 +66,8 @@ https://wedhq.ca/event" href="https://wa.me/?text=%E5%94%94%E7%9F%A5%E9%BB%9E%E8
   <strong>暫時未能提交。</strong>
   <p>請稍後再試一次。</p>
 </div></div>
-</section></main><script src="script.js"></script><script>
+</section></main><script src="script.js"></script>
+<script src="forms.js"></script><script>
 (function(){
   document.querySelectorAll('.smart-wa').forEach(function(link){
     link.addEventListener('click', function(e){
@@ -89,29 +90,18 @@ document.addEventListener('DOMContentLoaded', function () {
   const error = document.getElementById('event-error');
   const submitButton = form.querySelector('button[type="submit"]');
 
-  function encode(data) {
-    const params = new URLSearchParams();
-    for (const [key, value] of data.entries()) params.append(key, value);
-    return params.toString();
-  }
 
   form.addEventListener('submit', async function (e) {
     e.preventDefault();
+    if (submitButton.disabled) return;
+    if (!form.reportValidity()) return;
     success.hidden = true;
     error.hidden = true;
     submitButton.disabled = true;
     submitButton.textContent = '提交中…';
 
     try {
-      const formData = new FormData(form);
-      const response = await fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'text/html' },
-        cache: 'no-store',
-        body: encode(formData)
-      });
-
-      if (!response.ok) throw new Error('Submission failed');
+      await window.WedHQForms.submit(form);
 
       form.reset();
       form.hidden = true;
