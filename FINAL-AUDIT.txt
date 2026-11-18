@@ -4,7 +4,7 @@ PASS — YouTube EP01 link
 PASS — YouTube archive link
 PASS — YouTube JSON-LD sameAs
 PASS — Favicon all HTML pages
-PASS — 小情景 eliminated
+PASS — 小情境 eliminated
 PASS — 婚禮小情境 present
 PASS — Scenario Netlify form
 PASS — Event Netlify form
