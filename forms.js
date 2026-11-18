@@ -1,7 +1,7 @@
 /* Shared Netlify transport. A generic 2xx page is not a form receipt. */
 (function (root) {
   function isNetlifyReceipt(response, html) {
-    if (!response.ok || response.redirected) return false;
+    if (!response.ok) return false;
     const doc = new DOMParser().parseFromString(html, 'text/html');
     // Reject a rewrite to our homepage, a login page, or a bot challenge.
     if (doc.querySelector('form, .site-header, [name="password"]')) return false;
